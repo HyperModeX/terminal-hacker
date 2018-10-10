@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class Hacker : MonoBehaviour {
     int level;
-
     enum Screen { MainMenu, Password, Win, EasterEgg };
-    Screen currentScreen = Screen.MainMenu;
+    Screen currentScreen;
 
 	// Use this for initialization
-	void Start () {
-        ShowMainMenu("Hello Zac");
+	void Start ()
+    {
+        ShowMainMenu();
     }
 
-    void ShowMainMenu (string greeting)
+    void ShowMainMenu ()
     {
         Terminal.ClearScreen();
-        Terminal.WriteLine(greeting);
         Terminal.WriteLine("Welcome to terminal hacker");
         Terminal.WriteLine("what would you like to hack?");
 
@@ -28,12 +27,21 @@ public class Hacker : MonoBehaviour {
 
     void OnUserInput(string input)
     {
-        if (input == "Poop")
+        if (input == "menu")
         {
-            Terminal.WriteLine("Ha Ha you're so funny!!!\nBut seriously, TYPE AN ANSWER!!!!");
-            currentScreen = Screen.EasterEgg;
+            ShowMainMenu();
+
         }
-        else if (input == "1")
+        else if (currentScreen == Screen.MainMenu)
+        {
+            RunMainMenu(input);
+        }
+
+    }
+
+    void RunMainMenu(string input)
+    {
+        if (input == "1")
         {
             level = 1;
             StartGame();
@@ -49,17 +57,18 @@ public class Hacker : MonoBehaviour {
             level = 3;
             StartGame();
         }
-        else if (input == "menu")
+        else if (input == "Poop")
         {
-            ShowMainMenu("Hello Zac");
+            currentScreen = Screen.EasterEgg;
+            Terminal.WriteLine("Ha Ha you're so funny!!!\nBut seriously, TYPE AN ANSWER!!!!");
         }
-        else {
+        else
+        {
             Terminal.WriteLine("CHOOSE A LEVEL!!! Please.");
         }
-
     }
 
-        void StartGame()
+    void StartGame()
         {
             Terminal.WriteLine("You have chosen level " + level);
             Terminal.WriteLine("Please enter your password: ");
